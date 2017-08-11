@@ -1,0 +1,25 @@
+{
+  "name": "test_template",
+  "title": "Test Template",
+  "description": "The best jQuery plugin ever.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/XIAO034/~",
+  "author": {
+    "name": "Micheal"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/XIAO034/~.git"
+  },
+  "bugs": "https://github.com/XIAO034/~/issues",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/XIAO034/~/blob/master/LICENSE-MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": "*"
+  },
+  "keywords": []
+}

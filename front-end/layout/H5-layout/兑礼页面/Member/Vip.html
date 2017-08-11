@@ -1,0 +1,93 @@
+﻿
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+    <title>HR</title>
+    <script src="../resource/wechat/helena/gift/scripts/jquery-1.11.1.min.js"></script>
+    <script src="../resource/wechat/helena/gift/scripts/data.js"></script>
+    <script src="../resource/wechat/helena/gift/scripts/main.js"></script>
+    <link href="../resource/wechat/helena/gift/scripts/main.css" rel="stylesheet" />
+    <link href="../resource/wechat/helena/gift/scripts/normalize.css" rel="stylesheet" />
+    <style>
+        .kv {
+            width: 100%;
+        }
+
+        .menu {
+            width: 100%;
+            margin: 0px auto;
+            display: table;
+        }
+
+            .menu a {
+                display: inline-block;
+                width: 50%;
+            }
+
+                .menu a img {
+                    width: 100%;
+                }
+
+        #popup-vip .wrap {
+            position: relative;
+        }
+
+            #popup-vip .wrap:after {
+                content: "";
+                display: block;
+            }
+
+            #popup-vip .wrap img {
+                display: block;
+                width: 100%;
+            }
+    </style>
+    <script>
+        function showVip(idx) {
+            if (idx < 0) {
+                $("#popup-vip").fadeOut();
+            } else {
+                $("#popup-vip>.wrap img").each(function (i, dom) {
+                    $(dom)[i == idx ? "show" : "hide"]();
+                });
+                $("#popup-vip").fadeIn();
+            }
+        }
+        $(function () {
+            $(".popup").click(function () {
+                $(this).fadeOut();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="kv">
+        <img src="../resource/wechat/helena/gift/images/vip/kv.jpg" style="width:100%" />
+    </div>
+    <div class="menu">
+        <a href="javascript:showVip(0);"><img src="~/resource/wechat/helena/gift/images/vip/btn_vip_01.png" /></a><a href="javascript:showVip(1);"><img src="~/resource/wechat/helena/gift/images/vip/btn_vip_02.png" /></a>
+    </div>
+    <div class="menu" style="position:relative; top:-5px;">
+        <a href="javascript:showVip(2);"><img src="../resource/wechat/helena/gift/images/vip/btn_vip_03.png" /></a><a href="javascript:showVip(3);"><img src="~/resource/wechat/helena/gift/images/vip/btn_vip_04.png" /></a>
+    </div>
+    <div id="popup-vip" class="popup">
+        <div class="wrap" style="width:90%; margin:50px auto 0px;">
+            <img src="../resource/wechat/helena/gift/images/vip/tk_vip1.png" />
+            <img src="../resource/wechat/helena/gift/images/vip/tk_vip2.png" />
+            <img src="../resource/wechat/helena/gift/images/vip/tk_vip3.png" />
+            <img src="../resource/wechat/helena/gift/images/vip/tk_vip4.png" />
+        </div>
+        <div style="position: relative; top: -100px; z-index: 300;">
+            <a href="#" onclick="back()"><img src="../resource/wechat/helena/gift/images/vip/btn_ck.png" /></a>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    function back() {
+        location.href = "/Member/My";
+    }
+</script>
+
+

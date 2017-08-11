@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+    <title>HR</title>
+    <script src="../resource/wechat/helena/gift/scripts/jquery-1.11.1.min.js"></script>
+    <link href="../resource/wechat/helena/gift/scripts/main.css" rel="stylesheet" />
+    <link href="../resource/wechat/helena/gift/scripts/normalize.css" rel="stylesheet" />
+    <script src="../resource/wechat/helena/gift/scripts/data.js"></script>
+    <script src="../resource/wechat/helena/gift/scripts/main.js"></script>
+    <script src="../resource/layer/layer.js"></script>
+    <style>
+        .order-form {
+            width: 84%;
+            margin: 0px 8%;
+            border: 2px solid #908058;
+            margin-top: 15px;
+            padding: 30px 0px;
+            border-left: none;
+            border-right: none;
+        }
+
+            .order-form td:nth-child(2n) {
+                width: 70%;
+                padding: 1%;
+                text-align: left;
+                color: #ffffff;
+            }
+
+            .order-form td:nth-child(2n+1) {
+                height: 70px;
+                width: 30%;
+            }
+
+        .order-done {
+            text-align: center;
+            padding: 60px 0px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="kv">
+        <img src='../resource/wechat/helena/gift/images/order/kv.jpg' style="width:100%" />
+    </div>
+    <div ng-controller="orderdetail">
+        <div class="t1" style="text-align:center; padding: 30px 0px 50px; ">
+            您的预约信息
+        </div>
+        <div class="order-form">
+            <table class='t2' style="width:80%; margin:0px auto;font-size:30px;">
+                <tr>
+                    <td>姓名</td>
+                    <td>@(Model.UserName)</td>
+                </tr>
+                <tr>
+                    <td>手机</td>
+                    <td>@(Model.Phone)</td>
+                </tr>
+                <tr>
+                    <td>礼品</td>
+                    <td>@(Model.GiftName) x @(Model.Quantity)</td>
+                </tr>
+                <tr style="@(Model.Ex_Type == 1 ? "display:none" : "")">
+                    <td>专柜</td>
+                    <td>@(Model.StoreName)</td>
+                </tr>
+                <tr style="@(Model.Ex_Type == 0 ? "display:none" : "")">
+                    <td>邮寄地址</td>
+                    <td>
+                        <div style="width:21rem;word-wrap:break-word;">@(Model.PostAddress)</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="t1 order-done" style="font-size:2.3rem;@(Model.Ex_Status == 0 ? "" : "display:none;")">
+            <a class="button" style="width: 300px;" onclick="cancel();">取消</a>
+        </div>
+        <div class="t2 order-done" style="@((Model.Ex_Status == 1 && Model.Ex_Type == 1) ? "" : "display:none;")">
+            <a class="button" style="width: 300px;" onclick="baGet();">BA确认按钮</a>
+            <div class='t3' style="text-align: center; padding-top:50px;">由BA柜员操作上面的按钮</div>
+        </div>
+        <div class="t1 order-done" style="font-size:2.3rem;@(Model.Ex_Status == 2 ? "" : "display:none;")">
+            已经领取
+        </div>
+        @*<div class="t1 order-done" style="font-size:2.3rem;">
+                <a class="button" style="width: 300px;" onclick="back();">返回</a>
+            </div>*@
+    </div>
+</body>
+</html>
+<script>
+    function back() {
+        location.href = "@(Url.Action("OrderList","Order"))";
+    }
+    function cancel() {
+        //var layerIndex = layer.confirm('<span style="color:black;font-size:18px;">确认要取消吗？</span>', {
+        //    btn: ['确认', '取消'] //按钮
+        //}, function () {
+        if (confirm("是否取消预约。")){
+            $.ajax({
+                type: 'post',
+                url: '@(Url.Action("Cancel", "Order"))',
+                data: { o: '@(Model.OrderNo)' },
+                success: function (rst) {
+                    var rstJ = $.parseJSON(rst);
+                    if (rstJ.state) {
+                        location.reload();
+                    } else {
+                        alert(rstJ.msg);
+                    }
+                }
+            });
+        }
+        //}, function (i) {
+        //    layer.close(i);
+        //});
+        //layer.style(layerIndex, {
+        //    area: ['500px', '300px']
+        //    //width: "400px",
+        //    //left: "108px"
+        //    //left: '1.3rem'
+        //});
+    }
+
+    function baGet() {
+        //var layerIndex = layer.confirm('<span style="color:black;font-size:18px;">确定要执行此操作吗？</span>', {
+        //    btn: ['确认', '取消'] //按钮
+        //}, function () {
+        if (confirm("是否确认领取。")) {
+            $.ajax({
+                type: 'post',
+                url: '@(Url.Action("Confirm", "Order"))',
+                data: { o: '@(Model.OrderNo)' },
+                success: function (rst) {
+                    var rstJ = $.parseJSON(rst);
+                    if (rstJ.state) {
+                        location.reload();
+                    } else {
+                        alert(rstJ.msg);
+                    }
+                }
+            });
+        }
+        //}, function (i) {
+        //    layer.close(i);
+        //});
+        //layer.style(layerIndex, {
+        //    area: ['600px', '600px']
+        //    //width: "400px",
+        //    //left: "108px"
+        //    //left: '1.3rem'
+        //});
+    }
+
+</script>

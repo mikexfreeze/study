@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+    <title>HR</title>
+    <script src="../resource/wechat/helena/gift/scripts/jquery-1.11.1.min.js"></script>
+    <script src="../resource/wechat/helena/gift/scripts/data.js"></script>
+    <script src="../resource/wechat/helena/gift/scripts/main.js"></script>
+    <link href="../resource/wechat/helena/gift/scripts/main.css" rel="stylesheet" />
+    <link href="../resource/wechat/helena/gift/scripts/normalize.css" rel="stylesheet" />
+    <style>
+        .kv {
+            width: 100%;
+            /*background: url(images/menu/kv.jpg) center top;*/
+        }
+
+            .kv img {
+                width: 100%;
+            }
+
+        .menu {
+            width: 80%;
+            margin: 0px auto;
+        }
+
+        #popup-rule > img {
+            width: 100%;
+            display: block;
+        }
+
+        .menu img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="kv">
+        <img src="../resource/wechat/helena/gift/images/menu/kv.jpg" />
+    </div>
+    <div class="menu">
+        <img src="../resource/wechat/helena/gift/images/menu/btn_0.png" />
+        <a href="@(Url.Action("Vip","Member",new { info = ViewBag.op}))"><img src="../resource/wechat/helena/gift/images/menu/btn_1.png" /></a>
+        <a href="javascript:showPopup('rule', true);"><img src="../resource/wechat/helena/gift/images/menu/btn_2.png" /></a>
+        <a href="@(Url.Action("My","Member",new { openid=ViewBag.op}))">
+            <img src="../resource/wechat/helena/gift/images/menu/btn_3.png" />
+        </a>
+        <a href="javascript:showPopup('viprule', true);">
+            <img src="../resource/wechat/helena/gift/images/menu/btn_4.png" />
+        </a>
+        <a href="@(Url.Action("OrderList", "Order", new { info = ViewBag.op }))">
+            <img src="../resource/wechat/helena/gift/images/menu/btn_5.png" />
+        </a>
+    </div>
+
+    <div id="popup-viprule" class="popup" style="background-color: #000000;">
+        <img src="../resource/wechat/helena/gift/images/gift/gz.jpg" />
+        <div style="position: relative; top: -7.2em;margin-left:16em; text-align: center; width:14.8em;height:3.3em;" onclick="goGift()">
+        </div>
+    </div>
+
+    <div id="popup-rule" class="popup" style="background-color: #000000;">
+        <img src="../resource/wechat/helena/gift/images/menu/hdgz.jpg" />
+        <div style="position: relative; top: -180px; text-align: center; width:100%;">
+            <a href="javascript:showPopup('rule', false);">
+                <img src="../resource/wechat/helena/gift/images/menu/btn_popup_back.png" alt="" style="padding-right: 50px;" />
+            </a>
+            <a href="@(Url.Action("My","Member",new { openid = ViewBag.op }))">
+                <img src="../resource/wechat/helena/gift/images/menu/btn_popup_ck.png" alt="" />
+            </a>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    function showPopup(id, flag, dur) {
+        $("#popup-" + id)[flag ? "fadeIn" : "fadeOut"](dur);
+    }
+
+    function goGift() {
+        //location.href = "@(Url.Action("Index","Gift",new { openid = ViewBag.op }))";
+    }
+</script>
+
+
+

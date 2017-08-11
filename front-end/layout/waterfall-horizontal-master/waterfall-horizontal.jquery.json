@@ -1,0 +1,29 @@
+{
+  "name": "waterfall-horizontal",
+  "title": "waterfall-horizontal",
+  "description": "jquery waterfall align horizontally plugin,like flickr.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/senntyou/waterfall-horizontal",
+  "docs": "https://github.com/senntyou/waterfall-horizontal/docs/",
+  "author": {
+    "name": "senntyou",
+    "email": "jiangjinbelief@gmail.com",
+    "url": "https://github.com/senntyou"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/senntyou/waterfall-horizontal.git"
+  },
+  "bugs": "https://github.com/senntyou/waterfall-horizontal/issues",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/senntyou/waterfall-horizontal/master/LICENSE-MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">=1.6.1",
+    "handlebars": "*"
+  },
+  "keywords": ["waterfall", "horizontal", "flickr", "infinitescroll", "scroll", "fluid", "layout"]
+}

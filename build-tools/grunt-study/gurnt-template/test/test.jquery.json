@@ -1,0 +1,23 @@
+{
+  "name": "test",
+  "title": "Test",
+  "description": "The best jQuery plugin ever.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/XIAO034/test",
+  "author": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/XIAO034/test.git"
+  },
+  "bugs": "https://github.com/XIAO034/test/issues",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/XIAO034/test/blob/master/LICENSE-MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": "*"
+  },
+  "keywords": []
+}

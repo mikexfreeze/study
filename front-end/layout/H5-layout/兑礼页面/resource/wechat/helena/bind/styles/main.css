@@ -1,0 +1,20 @@
+
+* {
+    margin:0px;
+    padding:0px;
+}
+
+body{
+    
+}
+
+a img{
+    border:none;
+}
+
+.kv img{
+    width:320px;
+    left:50%;
+    margin-left:-160px;
+    position:absolute;
+}

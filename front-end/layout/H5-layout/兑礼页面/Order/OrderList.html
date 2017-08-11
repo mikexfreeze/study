@@ -1,0 +1,88 @@
+﻿@model  List<Loreal.Wechat.Lancome.Models.OrderViewModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+    <title>HR</title>
+    <script src="../resource/wechat/helena/gift/scripts/jquery-1.11.1.min.js"></script>
+    <link href="../resource/wechat/helena/gift/scripts/main.css" rel="stylesheet" />
+    <link href="../resource/wechat/helena/gift/scripts/normalize.css" rel="stylesheet" />
+    <script src="../resource/wechat/helena/gift/scripts/data.js"></script>
+    <script src="../resource/wechat/helena/gift/scripts/main.js"></script>
+    <script src="../resource/layer/layer.js"></script>
+    <style>
+        .order-list {
+            margin: 0px auto;
+            width: 90%;
+        }
+
+            .order-list .order {
+                border: 2px solid #a59a84;
+                border-radius: 10px;
+                padding: 20px;
+                margin: 20px;
+                clear: both;
+            }
+
+        .order .status {
+            float: right;
+            font-size: 30px;
+            line-height: 26px;
+        }
+
+            .order .status img {
+            }
+
+        .order .title {
+            color: #bdb3a3;
+            font-size: 24px;
+        }
+
+        .order .date {
+            color: #999999;
+            font-size: 16px;
+        }
+
+        .order .failed {
+            color: #cd0432;
+        }
+    </style>
+</head>
+<body>
+    <div class="kv">
+        <img src='../resource/wechat/helena/gift/images/order/kv.jpg' style="width:100%" />
+    </div>
+    <div class="order-list">
+        <div class="t1" style="text-align:center; padding: 30px;">
+            您的兑礼预约
+        </div>
+        @{foreach (var item in Model)
+            {
+                <div class="order">
+                    <div class="status @(item.Ex_Status==3?"failed":"")" onclick="detail('@(item.OrderNo)')">
+                        <img class="status" style="vertical-align: middle;"
+                             src='~/resource/wechat/helena/gift/images/order/arrow.png' />
+                    </div>
+                    <div class="status @(item.Ex_Status==3?"failed":"")" onclick="detail('@(item.OrderNo)')" style="text-align:center;">
+                        @(item.Ex_StatusStr)<span style="font-size:16px;@(item.Ex_Status == 0 ? "" : "display:none")">
+                            <br />
+                            （请于一周后查询结果）
+                        </span>
+                    </div>
+                    <div class="title">@(item.GiftName)</div>
+                    <div class="date">@(item.CreateTimeStr)</div>
+                </div>
+            } }
+    </div>
+</body>
+</html>
+<script>
+    function detail(no) {
+        location.href = "/Order/Details?o=" + no;
+    }
+</script>

@@ -1,0 +1,137 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+    <title>HR</title>
+    <script src="../resource/wechat/helena/gift/scripts/jquery-1.11.1.min.js"></script>
+    <link href="../resource/wechat/helena/gift/scripts/main.css" rel="stylesheet" />
+    <link href="../resource/wechat/helena/gift/scripts/jquery.fullPage.css" rel="stylesheet" />
+
+    <script src="../resource/wechat/helena/gift/scripts/jquery-ui.js"></script>
+    <script src="../resource/wechat/helena/gift/scripts/jquery.fullPage.min.js"></script>
+    <style>
+        .gift {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            text-align: center;
+        }
+
+            .gift > .item {
+                width: 100%;
+            }
+
+            .gift .order {
+                width: 80%;
+                margin: 20px auto 0px;
+                padding: 20px 0px 0px;
+                border-top: 1px solid #908058;
+            }
+
+        .userinfo {
+            background: url('../resource/wechat/helena/gift/images/gift/fc.png')center top no-repeat;
+            height: 57px;
+            position: fixed;
+            top: 0px;
+            width: 100%;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 28px;
+        }
+
+            .userinfo span {
+                color: #ab9764;
+            }
+    </style>
+
+</head>
+<body>
+    <div id="fullpage">
+        <div class="section" style="background:#000000;">
+            <div class="slide gift">
+                <img class="item" src="../resource/wechat/helena/gift/images/gift/p1.jpg" />
+                <p class="t1">纯净沁润洁颜泡沫</p>
+                <p><img src="../resource/wechat/helena/gift/images/gift/btn-0.png" /></p>
+                <p class="t2" style='font-size:36px;'>
+                    体验会员：7200积分<br />悦活&gl;极致会员：5760积分<br />尊荣会员：4800积分
+                </p>
+                <div class="order"><img src="../resource/wechat/helena/gift/images/gift/btn-1.png" /></div>
+            </div>
+        </div>
+    </div>
+    <div class="userinfo t3">
+        加载中
+    </div>
+    <div id="popup-detail" class="popup">
+        <img src="" />
+    </div>
+</body>
+</html>
+<script>
+    var tpl;
+    function createGiftDom(gift) {
+        var dom = tpl.clone();
+        dom.find(".item").attr("src", gift.ImgUrl);
+        dom.find("p").eq(0).text(gift.Name);
+        var level = '@(Model.UserLevel)';
+        var html = "";
+        if (level == "赫莲娜名媛") {
+            html += (gift.Point0) + "分<br/>";
+        } else if (level == "金卡" || level == "白金卡") {
+            html += (gift.Point1) + "分<br/>";
+        } else if (level == "钻石卡") {
+            html += (gift.Point2) + "分<br/>";
+        } else {
+            html += (gift.Point0) + " 分<br/>";
+        }
+        html += "<span style=\"font-size:0.7em;\">(钻石卡：" + (gift.Point2) + "分)<span><br/>";
+        dom.find("p").eq(2).html(html);
+        dom.find("p").eq(1).find("img").click(function () {
+            showDetail(gift.Url);
+        });
+        dom.find(".order>img").click(function () {
+            var url = "/Order/Index?info=" + '@(ViewBag.OpenId)' + "&giftId=" + gift.Id;
+            location = url;
+        });
+        $(".section").eq(0).append(dom);
+    }
+    function showDetail(src) {
+        $("#popup-detail").fadeIn();
+        $("#popup-detail img").attr("src", src);
+        $("#popup-detail img").load(function () {
+            $(this).fadeIn();
+        });
+    }
+    function getGifts(f) {
+        $.ajax({
+            type: 'get',
+            url: '/Gift/GetGiftList',
+            success: function (rst) {
+                var rstData = $.parseJSON(rst);
+                if (f)
+                    f(rstData);
+            }
+        });
+    }
+    $(function () {
+        //获取用户信息
+        getGifts(function (data) {
+            for (var i = 0; i < data.length; i++) {
+                createGiftDom(data[i]);
+            }
+            $('#fullpage').fullpage({
+                controlArrows: true,
+                slidesNavigation: true,
+                slidesNavPosition: 'bottom',
+                verticalCentered: 'false'
+            });
+        });
+
+        //$(".userinfo").html("尊敬的<span>@(string.IsNullOrEmpty(Model.UserLevel)?"会员": Model.UserLevel)</span>，您当前的积分为<span>@(Model.Point)</span>");
+
+        <!-- tpl = $(".slide").remove(); -->
+        <!-- $(".popup").click(function () { -->
+            <!-- $(this).fadeOut(); -->
+        <!-- }); -->
+    });
+</script>

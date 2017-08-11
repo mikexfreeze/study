@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    var testObj = {
+        a:"x",
+        b:"y"
+    }
+    $(testObj).each(function (v, n) {
+        console.log(v)
+        console.log(n)
+    })
+    $.each(testObj, function (v, n) {
+        console.log(v)
+        console.log(n)
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+    <title>HR</title>
+    <script src="~/resource/wechat/helena/gift/scripts/jquery-1.11.1.min.js"></script>
+    <link href="~/resource/wechat/helena/gift/scripts/main.css" rel="stylesheet" />
+    <link href="~/resource/wechat/helena/gift/scripts/normalize.css" rel="stylesheet" />
+    <script src="~/resource/wechat/helena/gift/scripts/main.js"></script>
+    <style>
+        .kv {
+            background: url('../resource/wechat/helena/gift/images/my/kv.jpg') center top no-repeat;
+            height: 330px;
+        }
+
+        .order-form {
+            width: 70%;
+            margin: 0px 15%;
+        }
+
+            .order-form td:nth-child(2n) {
+                width: 70%;
+                padding: 1%;
+                text-align: right;
+            }
+
+            .order-form td:nth-child(2n+1) {
+                height: 70px;
+                width: 30%;
+            }
+
+            .order-form select, .order-form input {
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0,0,0);
+                border: 2px solid #908058;
+                padding-left: 10px;
+                box-sizing: border-box;
+                text-indent: 5px;
+            }
+
+        ul.tabh {
+            border: 2px solid #908058;
+            display: table;
+            width: 68%;
+            margin: 30px auto 30px;
+            text-align: center;
+        }
+
+            ul.tabh li {
+                height: 60px;
+                display: inline-block;
+                padding-top: 8px;
+                box-sizing: border-box;
+                width: 50%;
+            }
+
+                ul.tabh li.a {
+                    background-color: #5c533c;
+                }
+
+        .tab {
+        }
+
+            .tab div {
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+
+        .userinfo {
+            background: url('../resource/wechat/helena/gift/images/gift/fc.png')center top no-repeat;
+            height: 57px;
+            position: fixed;
+            top: 0px;
+            width: 100%;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 28px;
+        }
+
+            .userinfo span {
+                color: #ab9764;
+            }
+    </style>
+</head>
+<body>
+    <div class="my" ng-controller="order">
+        <div>
+            <img id="giftimg" src="@(giftInfo.ImgUrl)" style="width:100%;" />
+            <input type="hidden" id="hidGiftId" name="GiftId" value="@(giftInfo.Id)" />
+        </div>
+        <div class="t2" style="padding:50px 0px; text-align: center;">@(giftInfo.Name)</div>
+        <table class="order-form t3">
+            <tr>
+                <td>选择件数</td>
+                <td>
+                    <select class="t3" id="Quantity" name="Quantity">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>积分等级</td>
+                <td>
+                    @*<select name="Grade" id="Grade" disable="diable">
+                        <option value="1">体验会员</option>
+                        <option value="2">悦活&极致会员</option>
+                        <option value="3">尊荣会员</option>
+                    </select>*@
+                    @{ 
+                        var html = "";
+                        var grade = 0;
+                        if (Model.UserLevel == "赫莲娜名媛")
+                        {
+                            html = "赫莲娜名媛：" + (giftInfo.Point0) + "分";
+                            grade = 1;
+                        }
+                        else if (Model.UserLevel == "金卡" )
+                        {
+                            html = "金卡&AMP;白金卡：" + (giftInfo.Point1) + "分";
+                            grade = 2;
+                        }
+                        else if (Model.UserLevel == "白金卡")
+                        {
+                            html = "金卡&AMP;白金卡：" + (giftInfo.Point1) + "分";
+                            grade = 3;
+                        }
+                        else if (Model.UserLevel == "钻石卡")
+                        {
+                            html = "钻石卡：" + (giftInfo.Point2) + "分";
+                            grade = 4;
+                        }
+                        else
+                        {
+                            html = "非会员：" + (giftInfo.Point0) + " 分";
+                        }
+                    }
+                    <input type="text" name="Grade" id="Grade" tag="@(grade)" value="@(html)" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td>天猫会员</td>
+                <td>
+                    <select class="t3" onchange="distmcode(this)" name="TMall" id="TMall">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="tmallcode" style="display:none;">
+                <td>天猫CODE</td>
+                <td><input class="t3" type="text" value="" name="TMallCode" id="TMallCode" /></td>
+            </tr>
+            <tr>
+                <td>兑礼方式</td>
+                <td>
+                    <select class="t3" name="ExchangeType" id="ExchangeType" onchange="disStore(this)">
+                        <option value="0">柜台兑礼</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <table class="order-form t3 tab" id="selStore">
+            <tr>
+                <td>柜台选择</td>
+                <td>
+                    <select class="t3" name="StoreId" id="StoreId">
+                        <option value="-1">请选择</option>
+                        @{ foreach (var item in storeList)
+                            {
+                                <option value="@(item.StoreId)">@(item.Name)</option>
+                            }}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="height:30px;"></td>
+                <td class="t5" style="text-align: left;">*天猫会员，可额外享受一次专柜美容护理服务</td>
+            </tr>
+        </table>
+        <table class="order-form t3 tab" id="postAddress" style="display:none;">
+            <tr>
+                <td>邮寄地址</td>
+                <td><input class="t3" type="text" value="" name="ExchangeAddress" id="ExchangeAddress" /></td>
+            </tr>
+            <tr ng-if="tmall==1">
+                <td style="height:30px;"></td>
+                <td class="t5" style="text-align: left;">*天猫会员，可额外免费快递服务</td>
+            </tr>
+        </table>
+        <table class="t3 order-form" style="padding-top:50px;">
+            <tr>
+                <td style="width:50%"><a class="button" style="width:90%;" onclick="back();">返回</a></td>
+                <td style="width:50%"><a class="button" style="width:90%;" onclick="submit();">下一步</a></td>
+            </tr>
+        </table>
+        <div class="userinfo t3">
+            <p ng-if="user">尊敬的<span>@(string.IsNullOrEmpty(Model.UserLevel) ? "会员" : Model.UserLevel)</span>，您当前的积分为<span>@(Model.Point)</span></p>
+            @*<p ng-if="!user">加载中</p>*@
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        $("#TMall option[value='0']").prop("selected", true);
+        $("#Quantity option[value='1']").prop("selected", true);
+        $("#ExchangeType option[value='0']").prop("selected", true);
+        $("#StoreId option[value='-1']").prop("selected", true);
+        $("#ExchangeAddress").val("");
+        $("#TMallCode").val("");
+        distmcode($("#TMall"));
+    });
+    function submit() {
+        var openid = '@(ViewBag.openid)';//openid
+        var giftId = $.trim($("#hidGiftId").val());//礼品Id
+        var quantity = $.trim($("#Quantity option:selected").val());//件数
+        var grade = $.trim($("#Grade").attr("tag"));//会员等级
+        var istmal = $.trim($("#TMall option:selected").val());//是否天猫会员
+        var tamllcode = $.trim($("#TMallCode").val());//天猫code
+        var ex_type = $.trim($("#ExchangeType option:selected").val());//兑礼方式
+        var storeid = $.trim($("#StoreId option:selected").val());//柜台Id
+        var address = $.trim($("#ExchangeAddress").val());//邮寄地址
+        if (istmal == 1) {//是天猫会员
+            if (!tamllcode) {
+                alert("请填写天猫Code");
+                $("#TMallCode").focus();
+                return false;
+            }
+            console.log(tamllcode);
+            if (tamllcode != "HRTM" && tamllcode != "HRST") {
+                alert("天猫Code只能是HRTM 或 HRST");
+                $("#TMallCode").focus();
+                return false;
+            }
+        }
+        if (istmal == 0 && ex_type == 1) {
+            alert("邮寄兑礼只有天猫会员才能选择");
+            return false;
+        }
+        if (ex_type == 1) {
+            if (!address) {
+                alert("请填写邮寄地址");
+                $("#ExchangeAddress").focus();
+                return false;
+            }
+        } else if (ex_type == 0) {
+            if (!storeid || storeid < 1) {
+                alert("请选择柜台");
+                return false;
+            }
+        }
+        var model = {
+            OpenId: openid,
+            GiftId: giftId,
+            Quantity: quantity,
+            TMall: istmal,
+            TMallCode: tamllcode,
+            ExchangeType: ex_type,
+            StoreId: storeid,
+            ExchangeAddress: address,
+            Grade: grade
+        };
+        $.ajax({
+            type: 'post',
+            url: '/Order/Create',
+            data: { model: model },
+            success: function (rst) {
+                var rstJson = $.parseJSON(rst);
+                if (rstJson.state) {
+                    alert("预约成功。");
+                    location.href = "/Order/Details?o=" + rstJson.o;
+                } else {
+                    alert(rstJson.msg);
+                }
+            }
+        });
+    }
+    function back() {
+        location.href = "/Gift/Index?info=@(ViewBag.openid)";
+    }
+    function distmcode(obj) {
+        var val = $(obj).val();
+        if (val == 1) {
+            $("#tmallcode").show();
+            $("#ExchangeType").append("<option value=\"1\">邮寄兑礼</option>");
+            $("#selStore").hide();
+            $("#postAddress").show();
+        } else {
+            $("#tmallcode").hide();
+            $("#ExchangeType option[value='1']").remove();
+            $("#selStore").show();
+            $("#postAddress").hide();
+        }
+        disStore($("#ExchangeType"));
+    }
+
+    function disStore(obj) {
+        var val = $(obj).val();
+        if (val == 1) {
+            $("#selStore").hide();
+            $("#postAddress").show();
+        } else {
+            $("#selStore").show();
+            $("#postAddress").hide();
+        }
+    }
+</script>
+

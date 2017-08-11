@@ -1,0 +1,211 @@
+﻿@{
+    ViewBag.Title = "用户绑定";
+    Layout = null;
+}
+@model Loreal.Wechat.Lancome.Models.MemberModel
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>用户绑定</title>
+    <link href="~/resource/wechat/helena/bind/styles/main.css" rel="stylesheet" />
+    <link href="~/resource/wechat/helena/bind/styles/normalize.css" rel="stylesheet" />
+    <script src="~/resource/wechat/helena/bind/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="//mscatscda.chinacloudsites.cn/api/servicebusjssdk.js/lor"></script>
+    <script type="text/javascript">
+        var mobileRegExp = /^[1]{1}[0-9]{10}$/;
+        function checkRegister() {
+            var username = document.getElementById('username');
+            var mobile = document.getElementById('mobile');
+            var code = document.getElementById('code');
+
+            if (username.value.length < 2) {
+                alert('用户名不能少于2个字符');
+                username.focus();
+                return false;
+            } else if (code.value.length < 5) {
+                alert('请正确输入验证码');
+                code.focus();
+                return false;
+            }
+
+            if (!mobileRegExp.test(mobile.value)) {
+                alert('手机错误');
+                mobile.focus();
+                return false;
+            }
+            return true;
+        }
+
+        function countdown() {
+            var max = 60;
+            $("#btnSetInterval").text(max + '秒后重新发送');
+            $("#btnSetInterval").addClass('disabled');
+            $("#btnSetInterval").unbind('click');
+            window.timer = setInterval(function () {
+                max--;
+                $("#btnSetInterval").text(max + '秒后重新发送');
+                if (max == -1) {
+                    clearFs();
+                }
+            }, 1000);
+        }
+
+        function clearFs() {
+            clearInterval(window.timer);
+            $("#btnSetInterval").text('获取验证码');
+            $("#btnSetInterval").removeClass('disabled');
+            $("#btnSetInterval").bind('click', getCode);
+        };
+
+        function getCode() {
+            var mobile = $('#mobile');
+            if (!mobileRegExp.test(mobile.val())) {
+                alert('手机格式有误');
+                mobile[0].focus();
+                return false;
+            }
+            countdown($(this));
+            $.ajax({
+                type: 'post',
+                url: "/Member/GetCode",
+                data: { mobile: mobile.val() },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.state == 1) {
+                        alert("验证码发送成功，请耐心等待。");
+                    } else {
+                        $("#promptinfomsg").text(data.msg);
+                        alert(data.msg);
+                    }
+                },
+                error: function () {
+                    alert("网络错误");
+                }
+            });
+        }
+
+        $(function () {
+            $("#btnSubmit").click(function () {
+                var username = $('input[name=username]').val();
+                var mobile = $('input[name=mobile]').val();
+                var code = $('input[name=code]').val();
+                var oid = $("#openid").val();
+
+                if (username.length < 2) {
+                    alert('请输入用户名');
+                    username[0].focus();
+                    return false;
+                } else if (code.length < 5) {
+                    alert('请正确输入验证码');
+                    code[0].focus();
+                    return false;
+                }
+
+                if (!mobileRegExp.test(mobile)) {
+                    alert('手机格式有误');
+                    mobile[0].focus();
+                    return false;
+                }
+
+                var model = {
+                    mobile: mobile,
+                    openid: oid,
+                    username: username,
+                    code: code
+                };
+
+                $.ajax({
+                    type: "post",
+                    url: "/Member/CheckBind",
+                    data: model,
+                    success: function (rst) {
+                        if (rst.state) {
+                            location.href = "/Member/Menu?info=@(Model.Member.OpenId)";
+                        } else {
+                            $("#promptinfomsg").text(rst.msg);
+                        }
+                    }
+                });
+            });
+
+            $("#btnSetInterval").click(function () {
+                getCode();
+            });
+        });
+    </script>
+
+    <style>
+        body {
+            background-color: #271F1C;
+            width: 100%;
+        }
+
+        .page {
+            background: url("../resource/wechat/helena/bind/images/bg.jpg") no-repeat scroll left top transparent;
+            width: 640px;
+            height: 1000px;
+            margin: 0px auto;
+        }
+
+        .con_title {
+            font-family: 微软雅黑;
+            font-size: 28px;
+            height: 64px;
+            line-height: 64px;
+            color: #FFF;
+            font-weight: bold;
+        }
+
+        input {
+            margin: 0px;
+            padding: 0px;
+            border: 0px none;
+            width: 456px;
+            height: 66px;
+            background: none repeat scroll 0% 0% #FFF;
+            line-height: 66px;
+            color: #000;
+            font-family: 微软雅黑;
+            font-size: 28px;
+            text-indent: 10px;
+        }
+
+        .prompt {
+            height: 120px;
+            width: 456px;
+            line-height: 120px;
+            font-family: 微软雅黑;
+            font-size: 24px;
+            color: #FFF;
+            background: url("../resource/wechat/helena/bind/images/prompt.png") no-repeat scroll 10px 50px transparent;
+            text-indent: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div style="width: 454px; margin: 0px auto; padding: 430px 72px 0px 72px;  text-align: left;">
+            <div class="con_title">手机：</div>
+            <div style="margin-bottom: 30px;">
+                <input name="mobile" id="mobile" type="tel" placeholder="手机" required />
+                <input type="hidden" name="openid" value="@Model.Member.OpenId" id="openid" />
+            </div>
+            <div class="con_title">姓名：</div>
+            <div style="margin-bottom: 30px;"><input name="username" id="username" type="text" placeholder="用户名" required /></div>
+            <div class="con_title">验证码：</div>
+            <div class="con_title" style="margin-bottom: 30px;">
+                <input name="code" style="width:240px;" type="text" placeholder="验证码" required />
+                <a style="float:right;" id="btnSetInterval">点击获取验证码</a>
+            </div>
+            <div style="text-align: center; padding-top:30px;" id="btnSubmit">
+                <input type="image" src="~/resource/wechat/helena/bind/images/sub.png"
+                       style="width:213px; height: 77px; background-color: rgba(0,0,0,0);" />
+            </div>
+            <div class="prompt" id="promptinfomsg">提交信息后，请耐心等待审核结果。</div>
+        </div>
+    </div>
+</body>
+</html>

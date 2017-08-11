@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "用户绑定";
+    Layout = null;
+}
+<!doctype html>
+<html style="font-size: 50.37481259370315px;">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>用户绑定</title>
+    <link href="~/resource/wechat/helena/bind/styles/main.css" rel="stylesheet" />
+    <link href="~/resource/wechat/helena/bind/styles/normalize.css" rel="stylesheet" />
+    <script src="~/resource/wechat/helena/bind/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        var mobileRegExp = /^[1]{1}[0-9]{10}$/;
+        function checkRegister() {
+            var username = document.getElementById('username');
+            var mobile = document.getElementById('mobile');
+            var code = document.getElementById('code');
+
+            if (username.value.length < 2) {
+                alert('用户名不能少于2个字符');
+                username.focus();
+                return false;
+            } else if (code.value.length < 5) {
+                alert('请正确输入验证码');
+                code.focus();
+                return false;
+            }
+            
+            if (!mobileRegExp.test(mobile.value)) {
+                alert('手机错误');
+                mobile.focus();
+                return false;
+            }
+            return true;
+        }
+
+        function getCode() {
+            var mobile = $('#mobile');
+            console.log(mobile.val());
+            if (!mobileRegExp.test(mobile.val())) {
+                alert('手机格式有误');
+                mobile[0].focus();
+                return false;
+            }
+            $.ajax({
+                type:'post',
+                url: "/Member/GetCode",
+                data: { mobile: mobile.val() },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.state == 1) {
+                        alert("验证码发送成功，请耐心等待。");
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function () {
+                    alert("网络错误");
+                }
+            });
+        }
+
+        $(function () {
+            $("#register").on('submit', function () {
+
+                var username = $('input[name=username]');
+                var mobile = $('input[name=mobile]');
+                var code = $('input[name=code]');
+
+                if (username.val().length < 2) {
+                    alert('请输入用户名');
+                    username[0].focus();
+                    return false;
+                } else if (code.val().length < 5) {
+                    alert('请正确输入验证码');
+                    code[0].focus();
+                    return false;
+                }
+
+                if (!mobileRegExp.test(mobile.val())) {
+                    alert('手机格式有误');
+                    mobile[0].focus();
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+
+    <style>
+        body {
+            background-color: #271F1C;
+            width: 100%;
+        }
+
+        .page {
+            background: url("../resource/wechat/helena/bind/images/bg.jpg") no-repeat scroll left top transparent;
+            width: 640px;
+            height: 1000px;
+            margin: 0px auto;
+        }
+
+        .con_title {
+            font-family: 微软雅黑;
+            font-size: 28px;
+            height: 64px;
+            line-height: 64px;
+            color: #FFF;
+            font-weight: bold;
+        }
+
+        input {
+            margin: 0px;
+            padding: 0px;
+            border: 0px none;
+            width: 456px;
+            height: 66px;
+            background: none repeat scroll 0% 0% #FFF;
+            line-height: 66px;
+            color: #000;
+            font-family: 微软雅黑;
+            font-size: 28px;
+            text-indent: 10px;
+        }
+
+        .prompt {
+            height: 120px;
+            width: 456px;
+            line-height: 120px;
+            font-family: 微软雅黑;
+            font-size: 24px;
+            color: #FFF;
+            background: url("../resource/wechat/helena/bind/images/prompt.png") no-repeat scroll 10px 50px transparent;
+            text-indent: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <form id="register" action="/Member/CheckBind" method="post" name="register">
+            <div style="width: 454px; margin: 0px auto; padding: 430px 72px;  text-align: left;">
+                <div class="con_title">手机：</div>
+                <div style="margin-bottom: 30px;"><input name="mobile" id="mobile" type="tel" placeholder="手机" required /></div>
+                <div class="con_title">姓名：</div>
+                <div style="margin-bottom: 30px;"><input name="username" id="username" type="text" placeholder="用户名" required /></div>
+                <div class="con_title">验证码：</div>
+                <div class="con_title" style="margin-bottom: 30px;">
+                    <input name="code" style="width:240px;" type="text" placeholder="验证码" required />
+                    <a onclick="getCode();" style="float:right;">点击获取验证码</a>
+                </div>
+                <div style="text-align: center; padding-top:30px;">
+                    <input type="image" src="~/resource/wechat/helena/bind/images/sub.png" 
+                           style="width:213px; height: 77px; background-color: rgba(0,0,0,0);" />
+                </div>
+                <div class="prompt"></div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
