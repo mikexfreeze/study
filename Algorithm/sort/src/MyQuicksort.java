@@ -2,6 +2,13 @@ import java.util.Arrays;
 
 public class MyQuicksort {
 
+    /**
+     * 划分
+     * @param arr
+     * @param left
+     * @param right
+     * @return
+     */
     public static int quicksortL2(int[] arr, int left, int right){
         int x = arr[left];
         while(left < right){
@@ -26,6 +33,12 @@ public class MyQuicksort {
         return left;
     }
 
+    /**
+     * 递归划分子序列
+     * @param arr
+     * @param left
+     * @param right
+     */
     public static void quicksortL1(int[] arr, int left, int right){
         if(left < right){
             int markPosition = quicksortL2(arr, left, right);
