@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Playable code</title>
+</head>
+
+<body>
+
+  <!-- Learn about this code on MDN: https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage -->
+
+<canvas id="canvas" width="400" height="200" class="playable-canvas"></canvas>
+<div style="display:none;">
+  <img id="source" src="http://file1.test2.yoomath.com/fs/962355095113048064?fs=proxy" width="300" height="227">
+</div>
+<div class="playable-buttons">
+  <input id="edit" type="button" value="Edit" />
+  <input id="reset" type="button" value="Reset" />
+</div>
+<textarea id="code" class="playable-code">
+ctx.drawImage(image, 33, 71, 104, 124, 21, 20, 87, 104);</textarea>
+  
+  
+
+    <script  src="js/index.js"></script>
+
+
+
+
+</body>
+
+</html>
