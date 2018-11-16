@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>exmaple</title>
+</head>
+<body>
+
+<p>我是p，我的颜色是？</p>
+<script src="lodash.min.js"></script>
+<script src="./webpack-numbers.js"></script>
+<script type="module">
+  // import * as _ from './lodash.min.js';
+  // import * as webpackNumbers from './webpack-numbers.js';
+
+  import { pColor } from './firstBlood.js';
+  pColor('red');
+
+
+  // console.log(_)
+  // console.log(webpackNumbers)
+  // webpackNumbers.wordToNum('Two');
+
+  console.log(webpackNumbers.wordToNum('Two'))
+
+</script>
+</body>
+</html>
