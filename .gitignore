@@ -33,3 +33,5 @@ full-stack/blog/yarn\.lock
 
 #java 编译目录
 **/target/
+
+front-end/Next/hello-next/\.next/
