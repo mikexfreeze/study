@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>创建商品</title>
+    <title>商品详情</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="static/assets/global/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/assets/global/css/components.css">
@@ -45,6 +45,9 @@
             <label class="control-label" id="sales"/>
         </div>
     </div>
+    <div class="form-actions">
+        <button class="btn blue" id="createOrder" type="submit">购买</button>
+    </div>
 
 </div>
 
@@ -72,6 +75,32 @@
     }
 
     $(document).ready(function () {
+        $("#createOrder").on("click",function () {
+            $.ajax({
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                url: "http://localhost:8090/order/createorder",
+                data: {
+                    "itemId": g_itemVO.id,
+                    "amount":1,
+                },
+                xhrFields: {withCredentials: true},
+                success: function (data) {
+                    if (data.status == "success") {
+                        alert("下单成功")
+                        window.location.reload()
+                    } else {
+                        alert("下单失败，原因为" + data.data.errMsg);
+                        if(data.data.errCode == 20003){
+                            window.location.href = "login.html";
+                        }
+                    }
+                },
+                error: function (data) {
+                    alert("下单失败，原因为" + data.responseText);
+                }
+            })
+        })
         $.ajax({
             type: "GET",
             url: "http://localhost:8090/item/get",
