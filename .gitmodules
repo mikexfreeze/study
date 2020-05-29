@@ -1,3 +1,6 @@
 [submodule "front-end/Three.js/threejs"]
 	path = front-end/Three.js/threejs
 	url = https://github.com/mrdoob/three.js.git
+[submodule "front-end/Three.js/three-seed"]
+	path = front-end/Three.js/three-seed
+	url = https://github.com/edwinwebb/three-seed.git
