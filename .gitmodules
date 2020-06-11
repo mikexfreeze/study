@@ -4,3 +4,6 @@
 [submodule "front-end/Three.js/three-seed"]
 	path = front-end/Three.js/three-seed
 	url = https://github.com/edwinwebb/three-seed.git
+[submodule "back-end/Spring-Boot/gs-spring-boot"]
+	path = back-end/Spring-Boot/gs-spring-boot
+	url = https://github.com/spring-guides/gs-spring-boot.git
