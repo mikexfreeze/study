@@ -1,0 +1,2 @@
+[【译】什么是Blob？](https://segmentfault.com/a/1190000023039630?utm_source=weekly&utm_medium=email&utm_campaign=SegmentFault%20%E7%B2%BE%E9%80%89%E6%AF%8F%E5%91%A8%E7%B2%BE%E9%80%89%E4%B8%A8GraphQL%20%E7%9C%9F%E6%AD%A3%E7%9A%84%E8%AF%A6%E7%BB%86%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B%E4%B8%A8%E6%8F%AD%E7%A7%98%20Webpack%20%E6%8F%92%E4%BB%B6%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+[什么是Blob？【原文】](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
