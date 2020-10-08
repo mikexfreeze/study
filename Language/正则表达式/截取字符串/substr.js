@@ -1,0 +1,2 @@
+var inputStr = 'abcdefghijklmn'
+
