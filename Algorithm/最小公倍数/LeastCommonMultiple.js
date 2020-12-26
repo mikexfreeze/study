@@ -18,5 +18,5 @@ function getGCD(a,b){
   return getGCD(b, a%b);
 }
 
-var res = getLCM(80, 12)
-console.log(res)
+var res = getLCM(12, 80)
+console.log('最大公倍数', res)
