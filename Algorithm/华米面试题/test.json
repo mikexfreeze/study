@@ -1,0 +1,53 @@
+{
+  "navigation": [
+    {
+      "id": 1,
+      "name": "System Manage",
+      "children": [
+        {
+          "id": 2,
+          "name": "Menu Manage",
+          "children": [
+            {
+              "id": 3,
+              "name": "Add Menu",
+              "children": []
+            },
+            {
+              "id": 4,
+              "name": "Menu List",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "name": "User List",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Develop Tools",
+      "children": [
+        {
+          "id": 7,
+          "name": "Monitor",
+          "children": []
+        },
+        {
+          "id": 8,
+          "name": "Logs",
+          "children": [
+            {
+              "id": 9,
+              "name": "Download Log",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
